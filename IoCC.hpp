@@ -204,24 +204,24 @@ public:
     }
 
     template<typename T>
-    void RegisterInstance(std::shared_ptr<T> instance) {
+    void Store(std::shared_ptr<T> instance) {
         RegisterInstance__<ioc_detail::SharedPtrWapper<T> >(unnamedInstanceMap, typeid(T), instance);
     }
 
     template<typename T>
-    void RegisterInstance(const std::string & name, std::shared_ptr<T> instance) {
+    void Store(const std::string & name, std::shared_ptr<T> instance) {
 
         auto key = NamedTypeKey(typeid(T), name );
         RegisterInstance__<ioc_detail::SharedPtrWapper<T> >(namedInstanceMap, key, instance);
     }
 
     template<typename T>
-    std::shared_ptr<T> &ResolveInstance( ) {
+    std::shared_ptr<T> &Retrieve( ) {
         return ResolveInstance<T>( unnamedInstanceMap, typeid(T) );
     }
 
     template<typename T>
-    std::shared_ptr<T> &ResolveInstance( const std::string & name ) {
+    std::shared_ptr<T> &Retrieve( const std::string & name ) {
 
         auto key = NamedTypeKey(typeid(T), name );
         return ResolveInstance<T>(namedInstanceMap, key);
@@ -248,7 +248,7 @@ public:
     }
 
     template<typename T, typename ...Args>
-    std::shared_ptr<T> Instantiate(Args... args) {
+    std::shared_ptr<T> New(Args... args) {
 
         typedef std::function<std::shared_ptr<T>(Args...)> InstantiatorType;
 
@@ -258,7 +258,7 @@ public:
     }
 
     template<typename T, typename ...Args>
-    std::shared_ptr<T> InstantiateNamed(const std::string & name, Args... args) {
+    std::shared_ptr<T> NewNamed(const std::string & name, Args... args) {
 
         typedef std::function<std::shared_ptr<T>(Args...)> InstantiatorType;
 
@@ -268,4 +268,3 @@ public:
     }
 };
 }
-
