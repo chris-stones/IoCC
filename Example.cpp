@@ -100,7 +100,7 @@ int main() {
 
     // Tell IoCC how to create concrete instances of IService with injected dependencies.
     iocc->RegisterInstantiator<std::shared_ptr<IService>(void)> (
-        [=] () { return std::make_shared<Service> (
+        [&] () { return std::make_shared<Service> (
                    iocc->New<IDependency>(),              // inject NEW  instance.
                    iocc->Retrieve<IDependency>("nine"));  // inject SHARED STORED named instance.
                }
@@ -115,7 +115,7 @@ int main() {
     // Tell IoCC how to create concrete instances of IService with injected dependencies,
     //	AND extra data passed at instantation time.
     iocc->RegisterInstantiator<std::shared_ptr<IService>(int,int,int)>(
-        [=] (int param0, int param1, int param2) {
+        [&] (int param0, int param1, int param2) {
             return std::make_shared<Service> (
                    iocc->New<IDependency>(param0),		  // inject NEW unnamed instance
                    iocc->Retrieve<IDependency>("nine"),   // inject shared stored named instance
